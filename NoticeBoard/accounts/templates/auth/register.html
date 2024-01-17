@@ -7,14 +7,41 @@ Registration Form | Your Website
 
 {% block content %}
 <div class="container">
-    <div class="form-container">
-        <h2 class="text-center mb-4">Registration Form</h2>
-        <form method="post" action="{% url 'register' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
+    <div class="signup-form">
+        <h2 class="text-center">Sign Up</h2>
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
         </form>
-        <p class="text-center mt-3">Already have an account? <a href="#">Login</a></p>
     </div>
 </div>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .signup-form {
+        width: 400px;
+        margin: 50px auto;
+    }
+</style>
 {% endblock %}
