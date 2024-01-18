@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path('', noticesView, name='notices'),
+    path('notice/<int:notice_id>/', notice_detail, name='notice_detail'),
  
    
 ]

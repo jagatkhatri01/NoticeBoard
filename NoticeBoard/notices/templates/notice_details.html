@@ -1,0 +1,27 @@
+<!-- notices/templates/notices/notice_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ notice.title }} | NoticeBoard
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ notice.title }}</h2>
+                    <p class="card-text">{{ notice.content }}</p>
+                    <p class="card-text"><small class="text-muted">Posted on: {{ notice.datetime }}</small></p>
+                    <p class="card-text"><small class="text-muted">Category: {{ notice.category }}</small></p>
+                    <!-- Add other details as needed -->
+
+                    <a href="{% url 'notices' %}" class="btn btn-secondary">Back to Notices</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
