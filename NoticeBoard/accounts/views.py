@@ -46,3 +46,4 @@ def login_view(request):
 @login_required
 def demo(request):
     return HttpResponse('This is index page')
+
