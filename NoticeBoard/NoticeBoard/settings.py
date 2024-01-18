@@ -89,7 +89,7 @@ with open('config.json') as config_file:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testDB',
+        'NAME': 'noticeDB',
         'USER': config['DB_USER'],
         'PASSWORD': config['DB_PASSWORD'],
         'HOST': 'localhost',
@@ -128,6 +128,8 @@ TIME_ZONE = 'Asia/Kathmandu'
 USE_I18N = True
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)

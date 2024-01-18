@@ -1,232 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home page</title>
-    <link rel="stylesheet" href="css/style1.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <title>{% block title %} {% endblock title %}</title>
 </head>
 
 <body>
-    <header id='header'>
-        <a href="index.html" class="logo"><img id='header-img'
-                src="https://fabiosroadstop.com/wp-content/uploads/elementor/thumbs/Logotipo-01-oz75j78g8ee3o10sckagsjt2vs6dsqay2g19n6nd98.png"
-                alt="" /></a>
 
-        <nav id='nav-bar'>
-            <ul class="nav-links">
-                <li><a class="nav-link active" href="#home">HOME</a></li>
-                <li><a class="nav-link" href="#about">ABOUT</a></li>
-                <li><a class="nav-link" href="#menu">MENU</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">iCoder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% block homeactive %}  {% endblock homeactive %}">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item {% block aboutactive %}  {% endblock aboutactive %}">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item {% block contactactive %}  {% endblock contactactive %} ">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+                <li class="nav-item {% block blogactive %}  {% endblock blogactive %} ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+
             </ul>
+            <div class="ml-auto form-inline ">
+                <form method="get" action="/search" class="my-2 my-lg-0 mx-3">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                        name="query" id="query">
+                    <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+                    <a href="/admin" role="button" target="_blank" class="btn btn-outline-success m-2 my-sm-0"> Admin
+                        Panel </a>
+                </form>
 
-            <div class="cart">
-                <i id="menu-bar" class="fa fa-hamburger"></i>
-                <a href="#"><i class="fa fa-shopping-bag"></i></a>
+
+
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button"
+                            data-toggle="dropdown"> Welcome {{request.user}}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/logout">Logout</a>
+
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+            {% else %}
+            <!-- Button to  trigger Login modal -->
+            <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#loginModal">
+                Login
+            </button>
 
-    <div id="home">
-        <div class="board">
-            <div class="separator-board">
-                <div class="flex">
-                    <div class="line-board first-line"></div>
+            <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#signupModal">
+                SignUp
+            </button>
+            {% endif %}
+
+
+        </div>
+    </nav>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message : </strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+
+
+
+
+    <!-- SignUp Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalTitle">SignUp Here</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    <form action="/signup" method='post'>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="Choose a unique username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control" id="fname" name="fname"
+                                placeholder="Enter Your First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control" id="lname" name="lname"
+                                placeholder="Enter Your Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass1">Choose a password</label>
+                            <input type="password" class="form-control" id="pass1" name="pass1"
+                                placeholder="Choose Your Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass2">Confirm Password</label>
+                            <input type="password" class="form-control" id="pass2" name="pass2"
+                                placeholder="Enter your password again" required>
+                        </div>
 
-                <div class="flex">
-                    <div class="line-board second-line"></div>
+
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
-
-                <div class="yellow">
-                    <h1>TODAY</h1>
-                </div>
-            </div>
-
-            <div class="flex">
-                <div class="line-red"></div>
-
-                <div class="red is">
-                    <h2>is a</h2>
-                </div>
-
-                <div class="line-red"></div>
-            </div>
-
-            <div class="separator-board">
-                <div class="yellow">
-                    <h1>good</h1>
-                    <h1>DAY</h1>
-                </div>
-
-                <div class="flex">
-                    <div class="line-board second-line"></div>
-                </div>
-
-                <div class="flex">
-                    <div class="line-board first-line"></div>
+                <div class="modal-footer">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="flex container" id="about">
-        <div class="col text">
-            <div class="global-headline">
-                <h2 class="sub-headline">
-                    <span class="first-letter">D</span>iscover
-                </h2>
-                <h1 class="headline">our story</h1>
-            </div>
-            <p class="restaurant-description">Fabio’s Roadstop is a personal dream of mine, which came true. An American
-                diner in conjunction with our own
-                unique
-                concept
-                within which we value the quality of our produce and perform daily tests to improve the final results of
-                our
-                confections.
-                All our attention is devoted to detail and therefore all our dishes are served in a careful and uniquely
-                special
-                way.
-                We are a supportive team with the ambition to serve better and do better. We are in constant learning
-                mode,
-                testing,
-                retrying, until we produce our products to the highest standard of quality. Our only goal is to offer
-                something
-                unique
-                served with quality and great service.
-                In our restaurant we want you to feel completely at home, to share happy moments whether they are with
-                family or
-                friends
-                and to enjoy the best we have to offer, from the best drinks to a delicious meal.</p>
-        </div>
-        <div class="col">
-            <video id='video' src="elementor-video"
-                src="https://fabiosroadstop.com/wp-content/uploads/2020/11/Fabios-Roadstop-sem-Logo-Final-Updated.mp4"
-                controls>
-        </div>
-    </div>
-    </div>
 
-    <div id="menu" class="main-font small-container">
-        <h2 class="tittle">
-            <span class="first-letter">M</span>enu
-        </h2>
-        <div class="row">
-            <div class="col-4">
-                <img
-                    src="https://images.unsplash.com/photo-1584178639036-613ba57e5e39?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0MDY4ODA0MA&ixlib=rb-1.2.1&q=85">
 
-                <div class="name">
-                    <h4>Burger</h4>
-                    <i class='fas fa-cart-plus cart'></i>
+
+
+
+    {% block body %} {% endblock body %}
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalTitle">Login Here</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <form action="/login" method="POST"> {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="loginusername" name="loginusername"
+                                placeholder="Enter your username " required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Enter your password </label>
+                            <input type="password" class="form-control" id="loginpassword" name="loginpassword"
+                                placeholder="Enter your password " required>
+                        </div>
 
-            <div class="col-4">
-                <img class="img"
-                    src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0MDY4ODMwOA&ixlib=rb-1.2.1&q=85">
-
-                <div class="name">
-                    <h4>Fries</h4>
-                    <i class='fas fa-cart-plus cart cart'></i>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
-            </div>
-
-            <div class="col-4">
-                <img
-                    src="https://images.unsplash.com/photo-1508254919937-d4a498e3366c?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0MDY4ODgyMw&ixlib=rb-1.2.1&q=85">
-
-                <div class="name">
-                    <h4>Lemonade</h4>
-                    <i class='fas fa-cart-plus cart'></i>
+                <div class="modal-footer">
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <form id='form' action='https://www.freecodecamp.com/email-submit'>
-        <h3>
-            Tell us your email, so we know you would like to receive our promotions and discounts !
-        </h3>
-        <input id='email' type='email' placeholder='email' name='email'>
-        <input id='submit' type='submit' placeholder='submit'>
-    </form>
-
-    <footer>
-        <div class="box-container">
-            <div class="box">
-                <h3>Contact info</h3>
-                <p><i class="fa fa-map-marker"></i>Rua Dr. Manuel de Arriaga
-                    Edf. Mar Salgado, Lote 1
-                    Loja E, 8365-140, Armação de Pêra</p>
-                <p><i class="fa fa-envelope"></i>fabio@fabiosroadstop.com</p>
-                <p><i class='fa fa-phone'></i>(+351) 282 317 025</p>
-            </div>
-
-            <div class="box">
-                <h3>Opening hours</h3>
-                <p>Tuesday to Saturday from 8:00 to 22:30</p>
-            </div>
-
-            <div class="box">
-                <h3>Follow us</h3>
-                <a href="">Instagram</a>
-                <a href="">Facebook</a>
-                <a href="">Youtube</a>
-                <a
-                    href="https://www.tripadvisor.pt/Restaurant_Review-g189113-d17755337-Reviews-Fabio_s_RoadStop-Armacao_de_Pera_Faro_District_Algarve.html">TripAdvsor</a>
-            </div>
-        </div>
-        <hr>
-        <p class="credit">Fabio's Roadstop - All rights reserved</p>
-    </footer>
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+                    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+                    crossorigin="anonymous"></script>
 </body>
-<script>
-    "use strict";
-
-    const burger = document.querySelector("#menu-bar");
-    const navLinks = document.querySelector(".nav-links");
-    const link = document.querySelectorAll(".nav-link");
-
-    burger.addEventListener("click", function () {
-        burger.classList.toggle("fa-times");
-        navLinks.classList.toggle("nav-toggle");
-    });
-
-    link[0].addEventListener("click", function () {
-        link[0].classList.add("active");
-
-        if (link[0].classList.contains("active")) {
-            link[1].classList.remove("active");
-            link[2].classList.remove("active");
-            link[3].classList.remove("active");
-        }
-    });
-
-    link[1].addEventListener("click", function () {
-        link[1].classList.add("active");
-
-        if (link[1].classList.contains("active")) {
-            link[0].classList.remove("active");
-            link[2].classList.remove("active");
-            link[3].classList.remove("active");
-        }
-    });
-
-    link[2].addEventListener("click", function () {
-        link[2].classList.add("active");
-
-        if (link[2].classList.contains("active")) {
-            link[0].classList.remove("active");
-            link[1].classList.remove("active");
-            link[3].classList.remove("active");
-        }
-    });
-
-</script>
 
 </html>

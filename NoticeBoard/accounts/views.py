@@ -1,23 +1,49 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .models import User
-from django.contrib import messages
+from django.shortcuts import render, redirect   
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
-# Create your views here.
-def register(request):
+def signUp(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-        try:
-            user = User.objects.create(name=username, email=email, password=password1)
-            login(request, user)
-            messages.success(request, 'Registration successful. You are now logged in.')
-            return redirect('home')  # Redirect to the home page after registration
-        except Exception as e:
-            # Print the error and add an error message
-            print(f"Error during user registration: {e}")
-            messages.error(request, 'An error occurred during registration. Please try again.')
+        password = request.POST.get('pass1')
+        confirm_password = request.POST.get('pass2')
 
-    return render(request, 'auth/register.html')    
+        # Basic validation
+        if not (username and password and password == confirm_password):
+            return render(request, 'auth/register.html', {'error': 'Invalid input'})
+
+        # Check if the username is already taken
+        if User.objects.filter(username=username).exists():
+            return render(request, 'auth/register.html', {'error': 'Username is already taken'})
+        
+        if User.objects.filter(email=email).exists():
+            return render(request, 'auth/register.html', {'error': 'Email is already in use'})
+        # Create a new user
+        user = User.objects.create_user(username=username, email=email, password=password)
+        # Log in the user
+        login(request, user)
+        return redirect('notices')  # Redirect to the home page after successful registration
+
+    return render(request, 'auth/register.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('notices')
+        else:
+            return render(request, 'auth/login.html', {'error': 'Invalid Input'})
+    return render(request, 'auth/login.html')
+
+
+@login_required
+def demo(request):
+    return HttpResponse('This is index page')
+

@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from .models import NoticeBoard
+from .models import Notice
 from django.db.models import Q
 
 # Create your views here.
-def notices(request):
+def noticesView(request):
     query = request.GET.get('search')
-    notices = NoticeBoard.objects.order_by('-datetime')
+    notices = Notice.objects.order_by('-datetime')
 
     if query:
         # Filter notices based on search query
@@ -28,5 +28,3 @@ def notices(request):
                 }
     return render(request, 'home.html', context)
 
-def home(request):
-    return render(request, 'demo.html')

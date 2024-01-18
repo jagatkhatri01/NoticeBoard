@@ -9,26 +9,15 @@
     color: #fff;
 }
 
-/* Center the cards horizontally */
-.container{
-    text-align: center;
-}
 /* Style for each notice card */
 .card {
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
 }
 
 /* Add margin at the top */
-.container mt-5 {
-    margin-top: 20px;
-}
-
-
-/* Add margin to the pagination */
-.pagination {
+.container {
     margin-top: 20px;
 }
 
