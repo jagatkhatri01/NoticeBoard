@@ -47,3 +47,10 @@ def login_view(request):
 def demo(request):
     return HttpResponse('This is index page')
 
+from django.contrib.auth.views import PasswordResetView
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'auth/password_reset.html'
+
+reset_password_view = CustomPasswordResetView.as_view()
+
