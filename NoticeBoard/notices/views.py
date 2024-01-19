@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from .models import Notice
+from .forms import CRNoticeForm
 from django.db.models import Q
 
 # Create your views here.
@@ -31,3 +32,18 @@ def noticesView(request):
 def notice_detail(request, notice_id):
     notice = get_object_or_404(Notice, pk=notice_id)
     return render(request, 'notice_details.html', {'notice': notice})
+
+def add_cr_notice(request):
+    if request.user.is_authenticated and request.user.is_cr:
+        if request.method == 'POST':
+            form = CRNoticeForm(request.POST)
+            if form.is_valid():
+                notice = form.save(commit=False)
+                notice.author = request.user
+                notice.save()
+                return redirect('notices')
+        else:
+            form = CRNoticeForm()
+        return render(request, 'add_cr_notice.html', {'form': form})
+    else:
+        return redirect('login')
