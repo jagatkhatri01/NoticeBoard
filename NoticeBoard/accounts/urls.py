@@ -1,12 +1,12 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from .views import *
 
 urlpatterns = [
     path('signUp/', signUp, name='signup'),
     path('login/', login_view, name='login'),
     path('demo/', demo, name='demo'),
-    path('logout/', logout_view, name='logout'),
+    path('reset-password/', reset_password_view, name='reset-password'),
     
    
 ]
