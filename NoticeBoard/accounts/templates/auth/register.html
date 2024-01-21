@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Registration Form | Your Website
+{% endblock %}
+
+{% block content %}
+
+    <div class="signup-form">
+        <h2 class="text-center">Sign Up</h2>
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="username" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="pass1" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" class="form-control" id="confirmPassword" name="pass2" placeholder="Confirm your password"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        </form>
+    </div>
+</div>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .signup-form {
+        width: 400px;
+        margin: 50px auto;
+    }
+</style>
+
+{% endblock %}
