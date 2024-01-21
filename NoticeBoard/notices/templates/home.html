@@ -18,6 +18,10 @@ Home | NoticeBoard
                     <p class="card-text"><small class="text-muted">Posted on: {{ notice.datetime }}</small></p>
                     <p class="card-text"><small class="text-muted">Category: {{ notice.category }}</small></p>
                     <a href="{% url 'notice_detail' notice_id=notice.id %}" class="btn btn-primary">View Details</a>
+                    <p class="card-text">{{ notice.content }}</p>
+                    <p class="card-text"><small class="text-muted">Posted on: {{ notice.datetime }}</small></p>
+                    <p class="card-text"><small class="text-muted">Category: {{ notice.category }}</small></p>
+                    <a href="#" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>

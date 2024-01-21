@@ -29,6 +29,7 @@ def noticesView(request):
                 }
     return render(request, 'home.html', context)
 
+
 def notice_detail(request, notice_id):
     notice = get_object_or_404(Notice, pk=notice_id)
     return render(request, 'notice_details.html', {'notice': notice})
@@ -47,3 +48,4 @@ def add_cr_notice(request):
         return render(request, 'add_cr_notice.html', {'form': form})
     else:
         return redirect('login')
+
